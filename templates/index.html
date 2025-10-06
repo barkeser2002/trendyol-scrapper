@@ -206,6 +206,50 @@
             transform: translateY(-1px);
             box-shadow: 0 16px 30px var(--download-btn-hover-shadow);
         }
+        .modal-content {
+            background: var(--container-bg);
+            color: var(--text-color);
+            border-radius: 18px;
+            border: 1px solid var(--surface-border);
+            box-shadow: 0 22px 48px rgba(15, 23, 42, 0.22);
+            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        .modal-header,
+        .modal-footer {
+            border-color: var(--surface-border);
+            background: transparent;
+            color: var(--text-color);
+        }
+        .modal-title {
+            color: var(--h1-color);
+        }
+        .modal .form-label,
+        .modal .form-text {
+            color: var(--label-color);
+        }
+        .modal .form-control {
+            background: var(--container-bg);
+            color: var(--text-color);
+            border: 1px solid var(--input-border);
+            border-radius: 12px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .modal .form-control:focus {
+            background: var(--container-bg);
+            color: var(--text-color);
+            border-color: var(--input-focus-border);
+            box-shadow: 0 0 0 0.3rem var(--input-focus-shadow);
+        }
+        .modal .btn-secondary {
+            background: rgba(148, 163, 184, 0.22);
+            border: none;
+            color: var(--text-color);
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+        .modal .btn-secondary:hover {
+            background: rgba(148, 163, 184, 0.32);
+            color: var(--text-color);
+        }
         .theme-toggle {
             position: fixed;
             top: 20px;

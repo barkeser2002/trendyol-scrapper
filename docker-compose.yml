@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    container_name: trendyol-scraper
+    ports:
+      - "26888:26888"
+    environment:
+      - TRENDYOL_MAX_PAGES=${TRENDYOL_MAX_PAGES:-7}
+    volumes:
+      - ./outputs:/app/outputs
+    restart: unless-stopped

@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+*.log
+outputs/
+1.xlsx
+*.ipynb
+.git
+.gitignore
+.vscode/
+.env

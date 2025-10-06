@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Trendyol Ürün Arama</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #f5f6fa 0%, #ffffff 100%);
+            --container-bg: #ffffff;
+            --surface-border: rgba(148, 163, 184, 0.24);
+            --text-color: #1f2933;
+            --h1-color: #0f172a;
+            --desc-color: #475569;
+            --label-color: #1e293b;
+            --input-border: #cbd5f5;
+            --input-focus-border: #6366f1;
+            --input-focus-shadow: rgba(99, 102, 241, 0.16);
+            --button-bg: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --button-hover-shadow: rgba(99, 102, 241, 0.24);
+            --status-bg: #f1f5f9;
+            --status-color: #1e293b;
+            --status-error-bg: #fee2e2;
+            --status-error-color: #b91c1c;
+            --status-success-bg: #dcfce7;
+            --status-success-color: #166534;
+            --progress-bg: #e2e8f0;
+            --progress-bar-bg: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            --download-bg: #f8fafc;
+            --download-border: #e2e8f0;
+            --download-btn-bg: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+            --download-btn-hover-shadow: rgba(14, 165, 233, 0.24);
+            --footer-color: #475569;
+        }
+        body.dark-theme {
+            --bg-gradient: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+            --container-bg: #1f2937;
+            --surface-border: rgba(94, 106, 129, 0.35);
+            --text-color: #e5e7eb;
+            --h1-color: #f1f5f9;
+            --desc-color: #cbd5f5;
+            --label-color: #cbd5e1;
+            --input-border: #475569;
+            --input-focus-border: #8b5cf6;
+            --input-focus-shadow: rgba(139, 92, 246, 0.2);
+            --button-bg: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+            --button-hover-shadow: rgba(139, 92, 246, 0.32);
+            --status-bg: #273549;
+            --status-color: #e5e7eb;
+            --status-error-bg: #7f1d1d;
+            --status-error-color: #fca5a5;
+            --status-success-bg: #14532d;
+            --status-success-color: #86efac;
+            --progress-bg: #374151;
+            --progress-bar-bg: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+            --download-bg: #1f2937;
+            --download-border: rgba(148, 163, 184, 0.35);
+            --download-btn-bg: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            --download-btn-hover-shadow: rgba(37, 99, 235, 0.32);
+            --footer-color: #cbd5f5;
+        }
+        body {
+            margin: 0;
+            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .main-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 16px;
+        }
+        .main-card {
+            max-width: 720px;
+            width: 100%;
+            background: var(--container-bg);
+            border-radius: 22px;
+            border: 1px solid var(--surface-border);
+            color: var(--text-color);
+            box-shadow: 0 22px 48px rgba(15, 23, 42, 0.12);
+            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        .card-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--h1-color);
+        }
+        .text-muted {
+            color: var(--desc-color) !important;
+        }
+        .form-label {
+            font-weight: 600;
+            color: var(--label-color);
+        }
+        .form-control {
+            background: var(--container-bg);
+            color: var(--text-color);
+            border: 1px solid var(--input-border);
+            border-radius: 14px;
+            padding: 14px 16px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .form-control:focus {
+            background: var(--container-bg);
+            color: var(--text-color);
+            border-color: var(--input-focus-border);
+            box-shadow: 0 0 0 0.35rem var(--input-focus-shadow);
+        }
+        .btn-gradient {
+            background: var(--button-bg);
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .btn-gradient:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 16px 30px var(--button-hover-shadow);
+        }
+        .btn-gradient:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .alert {
+            border: none;
+            border-radius: 14px;
+            padding: 14px 18px;
+            background: var(--status-bg);
+            color: var(--status-color);
+        }
+        .alert-danger {
+            background: var(--status-error-bg);
+            color: var(--status-error-color);
+        }
+        .alert-success {
+            background: var(--status-success-bg);
+            color: var(--status-success-color);
+        }
+        .progress-wrapper {
+            margin-top: 20px;
+        }
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--desc-color);
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+        }
+        .progress-container {
+            width: 100%;
+            height: 14px;
+            border-radius: 999px;
+            background: var(--progress-bg);
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--progress-bar-bg);
+            transition: width 0.4s ease;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .download-section {
+            margin-top: 28px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--download-bg);
+            border-radius: 14px;
+            padding: 18px 22px;
+            border: 1px solid var(--download-border);
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+        .download-section p,
+        #downloadMessage {
+            margin: 0;
+            color: var(--text-color);
+        }
+        .download-btn {
+            text-decoration: none;
+            background: var(--download-btn-bg);
+            color: #fff !important;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+            justify-content: center;
+            box-shadow: none;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .download-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 16px 30px var(--download-btn-hover-shadow);
+        }
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+            background: var(--button-bg);
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--footer-color);
+            font-size: 0.9rem;
+        }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 12px;
+        }
+        .social-links a {
+            color: var(--footer-color);
+            transition: color 0.2s ease;
+        }
+        .social-links a:hover {
+            color: var(--button-bg);
+        }
+        .social-links i {
+            font-size: 22px;
+        }
+        @media (max-width: 768px) {
+            .main-wrapper {
+                padding: 32px 12px 72px;
+            }
+            .download-section {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+            .theme-toggle {
+                top: 16px;
+                right: 16px;
+            }
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    <button class="theme-toggle" id="themeToggle">Açık Tema</button>
+    <div class="main-wrapper">
+        <div class="card main-card shadow-lg border-0 p-4 p-md-5">
+            <div class="card-body">
+                <h1 class="card-title text-center mb-3">Trendyol Ürün Arama</h1>
+                <p class="text-center text-muted mb-4">Aramak istediğiniz anahtar kelimeyi girin.</p>
+                <div id="visitorNameDisplay" class="text-center text-muted small mb-3 hidden">
+                    Hoş geldiniz
+                </div>
+                <div class="text-center mb-4">
+                    <button type="button" id="changeNameButton" class="btn btn-link btn-sm text-decoration-none">İsmi Değiştir</button>
+                </div>
+                <form id="searchForm" class="mb-4">
+                    <div class="mb-3">
+                        <label for="query" class="form-label fw-semibold">Arama terimi</label>
+                        <input type="text" id="query" class="form-control form-control-lg rounded-3" placeholder="Örn. iPhone 13" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="maxPages" class="form-label fw-semibold">Taranacak sayfa sayısı</label>
+                        <input type="number" id="maxPages" class="form-control form-control-lg rounded-3" min="1" max="50" value="7" required>
+                        <div class="form-text text-muted mt-2">Her sayfa yaklaşık 24 ürün içerir.</div>
+                    </div>
+                    <button type="submit" id="searchButton" class="btn btn-gradient btn-lg w-100">Aramayı Başlat</button>
+                </form>
+                <div id="statusBox" class="alert alert-info hidden" role="alert"></div>
+                <div id="progressWrapper" class="progress-wrapper hidden mb-4">
+                    <div class="progress-label d-flex justify-content-between text-muted small mb-2">
+                        <span>İşleme Durumu</span>
+                        <span id="progressValue">0%</span>
+                    </div>
+                    <div class="progress-container rounded-pill">
+                        <div id="progressBar" class="progress-bar rounded-pill"></div>
+                    </div>
+                </div>
+                <div id="downloadSection" class="download-section hidden">
+                    <div id="downloadMessage">İndirme hazır.</div>
+                    <a id="downloadLink" class="download-btn btn-gradient" href="#" download>
+                        <i class="fas fa-file-excel"></i>
+                        Excel'i indir
+                    </a>
+                </div>
+                <div class="footer text-center mt-5 text-muted small">
+                    <p>© 2025 Barış Keşer</p>
+                    <div class="social-links d-flex justify-content-center gap-3 mt-3">
+                        <a href="https://open.spotify.com/intl-tr/artist/6ZOD12z4cMLZP3qqRBwtEn?si=m_GAIJPrS3a9lJr_QDftxw" target="_blank" title="Spotify" class="text-muted">
+                            <i class="fab fa-spotify fa-lg"></i>
+                        </a>
+                        <a href="https://instagram.com/baris_keser_" target="_blank" title="Instagram" class="text-muted">
+                            <i class="fab fa-instagram fa-lg"></i>
+                        </a>
+                        <a href="mailto:bariskeser@bariskeser.com" target="_blank" title="Email" class="text-muted">
+                            <i class="fas fa-envelope fa-lg"></i>
+                        </a>
+                        <a href="https://bariskeser.com/" target="_blank" title="Website" class="text-muted">
+                            <i class="fas fa-globe fa-lg"></i>
+                        </a>
+                        <a href="https://github.com/barkeser2002" target="_blank" title="GitHub" class="text-muted">
+                            <i class="fab fa-github fa-lg"></i>
+                        </a>
+                        <a href="https://discord.com/channels/@me/637985724007841812" target="_blank" title="Discord" class="text-muted">
+                            <i class="fab fa-discord fa-lg"></i>
+                        </a>
+                        <a href="https://youtube.com/@Baris_Keser" target="_blank" title="YouTube" class="text-muted">
+                            <i class="fab fa-youtube fa-lg"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="nameModal" tabindex="-1" aria-labelledby="nameModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="nameModalLabel">Hoş geldiniz! İsminizi girin</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="nameForm">
+                        <label for="visitorNameInput" class="form-label">Size nasıl hitap edelim?</label>
+                        <input type="text" id="visitorNameInput" class="form-control" placeholder="Örn. Barış" required>
+                        <div class="form-text mt-2">Bu bilgi yalnızca kayıt amacı için kullanılacak. kötü kullanımların önüne geçmek için lütfen gerçek isminizi girin.</div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelNameButton">İptal</button>
+                    <button type="submit" form="nameForm" class="btn btn-gradient">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const form = document.getElementById('searchForm');
+        const queryInput = document.getElementById('query');
+        const searchButton = document.getElementById('searchButton');
+        const statusBox = document.getElementById('statusBox');
+        const progressWrapper = document.getElementById('progressWrapper');
+        const progressBar = document.getElementById('progressBar');
+        const progressValue = document.getElementById('progressValue');
+        const downloadSection = document.getElementById('downloadSection');
+        const downloadLink = document.getElementById('downloadLink');
+        const downloadMessage = document.getElementById('downloadMessage');
+        const themeToggle = document.getElementById('themeToggle');
+        const visitorNameDisplay = document.getElementById('visitorNameDisplay');
+        const changeNameButton = document.getElementById('changeNameButton');
+    const maxPagesInput = document.getElementById('maxPages');
+
+        let visitorName = localStorage.getItem('visitorName') || '';
+        let nameModalInstance = null;
+
+    const MAX_PAGES_DEFAULT = 7;
+
+        let activeJobId = null;
+        let pollTimer = null;
+
+        function updateVisitorNameDisplay() {
+            if (visitorName) {
+                visitorNameDisplay.textContent = `Hoş geldin, ${visitorName}!`;
+                visitorNameDisplay.classList.remove('hidden');
+            } else {
+                visitorNameDisplay.classList.add('hidden');
+            }
+        }
+
+        function ensureVisitorName() {
+            if (!visitorName) {
+                showNameModal(true);
+                return false;
+            }
+            return true;
+        }
+
+        function showNameModal(force = false) {
+            if (!nameModalInstance) {
+                const modalElement = document.getElementById('nameModal');
+                nameModalInstance = new bootstrap.Modal(modalElement, {
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                const nameInput = document.getElementById('visitorNameInput');
+                modalElement.addEventListener('shown.bs.modal', () => {
+                    nameInput.focus();
+                });
+            }
+            if (force) {
+                document.getElementById('cancelNameButton').classList.add('hidden');
+            } else {
+                document.getElementById('cancelNameButton').classList.remove('hidden');
+            }
+            nameModalInstance.show();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-theme');
+                themeToggle.textContent = document.body.classList.contains('dark-theme') ? 'Açık Tema' : 'Siyah Tema';
+            });
+
+            const storedMaxPages = parseInt(localStorage.getItem('maxPages') || `${MAX_PAGES_DEFAULT}`, 10);
+            if (!Number.isNaN(storedMaxPages) && storedMaxPages >= 1 && storedMaxPages <= 50) {
+                maxPagesInput.value = storedMaxPages;
+            } else {
+                maxPagesInput.value = MAX_PAGES_DEFAULT;
+            }
+
+            maxPagesInput.addEventListener('change', () => {
+                const value = parseInt(maxPagesInput.value, 10);
+                if (Number.isNaN(value) || value < 1) {
+                    maxPagesInput.value = MAX_PAGES_DEFAULT;
+                    localStorage.setItem('maxPages', `${MAX_PAGES_DEFAULT}`);
+                    return;
+                }
+                const normalized = Math.min(Math.max(value, 1), 50);
+                maxPagesInput.value = normalized;
+                localStorage.setItem('maxPages', `${normalized}`);
+            });
+
+            updateVisitorNameDisplay();
+            if (!visitorName) {
+                showNameModal(true);
+            }
+
+            const nameForm = document.getElementById('nameForm');
+            nameForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const nameInput = document.getElementById('visitorNameInput');
+                const enteredName = nameInput.value.trim();
+                if (!enteredName) {
+                    nameInput.classList.add('is-invalid');
+                    return;
+                }
+                visitorName = enteredName;
+                localStorage.setItem('visitorName', visitorName);
+                updateVisitorNameDisplay();
+                nameInput.classList.remove('is-invalid');
+                if (nameModalInstance) {
+                    nameModalInstance.hide();
+                }
+            });
+
+            document.getElementById('cancelNameButton').addEventListener('click', () => {
+                if (nameModalInstance) {
+                    nameModalInstance.hide();
+                }
+            });
+
+            changeNameButton.addEventListener('click', () => {
+                const nameInput = document.getElementById('visitorNameInput');
+                nameInput.value = visitorName;
+                showNameModal(false);
+            });
+        });
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const query = queryInput.value.trim();
+            if (!query) {
+                showStatus('Lütfen arama terimi girin.', 'error');
+                return;
+            }
+            if (!ensureVisitorName()) {
+                showStatus('Arama yapmadan önce lütfen isminizi girin.', 'error');
+                return;
+            }
+            const maxPages = parseInt(maxPagesInput.value, 10);
+            if (Number.isNaN(maxPages) || maxPages < 1 || maxPages > 50) {
+                showStatus('Lütfen 1 ile 50 arasında bir sayfa sayısı girin.', 'error');
+                maxPagesInput.focus();
+                return;
+            }
+            localStorage.setItem('maxPages', `${maxPages}`);
+            resetUI();
+            searchButton.disabled = true;
+            try {
+                const response = await fetch('/api/search', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query, visitor_name: visitorName, max_pages: maxPages })
+                });
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.error || 'Arama başlatılamadı.');
+                }
+                activeJobId = data.job_id;
+                showStatus('Arama başlatıldı, ilerleme takip ediliyor...', 'info');
+                progressWrapper.classList.remove('hidden');
+                updateProgress(0);
+                pollProgress();
+            } catch (error) {
+                showStatus(error.message || 'Bir hata oluştu.', 'error');
+                searchButton.disabled = false;
+                progressWrapper.classList.add('hidden');
+            }
+        });
+
+        function resetUI() {
+            if (pollTimer) {
+                clearTimeout(pollTimer);
+                pollTimer = null;
+            }
+            activeJobId = null;
+            downloadSection.classList.add('hidden');
+            showStatus('', 'info', true);
+            updateProgress(0);
+        }
+
+        function showStatus(message, type = 'info', hide = false) {
+            if (hide || !message) {
+                statusBox.classList.add('hidden');
+                statusBox.textContent = '';
+                statusBox.classList.remove('alert-info', 'alert-danger', 'alert-success');
+                return;
+            }
+            statusBox.textContent = message;
+            statusBox.classList.remove('hidden');
+            statusBox.classList.remove('alert-info', 'alert-danger', 'alert-success');
+            if (type === 'error') {
+                statusBox.classList.add('alert-danger');
+            } else if (type === 'success') {
+                statusBox.classList.add('alert-success');
+            } else {
+                statusBox.classList.add('alert-info');
+            }
+        }
+
+        function updateProgress(value) {
+            const safeValue = Math.max(0, Math.min(100, Math.round(value)));
+            progressBar.style.width = safeValue + '%';
+            progressValue.textContent = safeValue + '%';
+        }
+
+        async function pollProgress() {
+            if (!activeJobId) {
+                return;
+            }
+            try {
+                const response = await fetch(`/api/progress/${activeJobId}`);
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.error || 'İlerleme alınamadı.');
+                }
+                if (typeof data.progress === 'number') {
+                    updateProgress(data.progress);
+                }
+                if (data.message) {
+                    const statusType = data.status === 'failed' ? 'error' : (data.status === 'completed' ? 'success' : 'info');
+                    showStatus(data.message, statusType);
+                }
+                if (data.status === 'completed') {
+                    searchButton.disabled = false;
+                    if (data.download_url) {
+                        downloadLink.href = data.download_url;
+                        downloadLink.setAttribute('download', `trendyol_products_${activeJobId}.xlsx`);
+                        downloadMessage.textContent = 'Excel dosyası hazır.';
+                        downloadSection.classList.remove('hidden');
+                    } else {
+                        downloadMessage.textContent = 'Ürün bulunamadı, indirilebilir dosya yok.';
+                        downloadSection.classList.remove('hidden');
+                        downloadLink.removeAttribute('href');
+                    }
+                    activeJobId = null;
+                    return;
+                }
+                if (data.status === 'failed') {
+                    searchButton.disabled = false;
+                    downloadSection.classList.add('hidden');
+                    activeJobId = null;
+                    return;
+                }
+                pollTimer = setTimeout(pollProgress, 2000);
+            } catch (error) {
+                showStatus(error.message || 'İlerleme alınamadı.', 'error');
+                searchButton.disabled = false;
+                activeJobId = null;
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
